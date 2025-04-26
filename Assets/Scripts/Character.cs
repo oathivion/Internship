@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class Player : MonoBehaviour
+
+public class Character : MonoBehaviour
 {
     public float speed = 5f;
     public float jump_height = 5f;
@@ -13,15 +14,9 @@ public class Player : MonoBehaviour
 
     private Rigidbody2D rb2d;
 
-    public int maxHealth = 5;
-
-    public int currentHealth;
-
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
-
-        currentHealth = maxHealth;
     }
 
     void Update()
@@ -36,26 +31,6 @@ public class Player : MonoBehaviour
         {
             rb2d.AddForce(new Vector2(0, jump_height), ForceMode2D.Impulse);
         }
-
-        
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        Debug.Log("Triggered with: " + other.gameObject.name);
-
-        if (other.gameObject.CompareTag("Enemy"))
-        {
-            Debug.Log("Triggered with an Enemy!");
-            currentHealth -= 1;
-        }
-    }
-
-    
-
-    void Die()
-    {
-        Debug.Log("Player Dead");
     }
 
     void OnDrawGizmosSelected()
@@ -69,6 +44,30 @@ public class Player : MonoBehaviour
     }
 
 
+    // void FixedUpdate()
+    // {
+    //     Vector2 Movement = new Vector2(0f,0f);
+
+    //     float move_Horizontal = Input.GetAxis("Horizontal");
+    //     if (move_Horizontal > 0)
+    //     {
+    //         {
+    //             rb2d.velocity = new Vector2(speed, rb2d.velocity.y);
+    //         }
+
+    //     }
+    //     if (move_Horizontal < 0)
+    //     {
+    //         rb2d.velocity = new Vector2(-speed, rb2d.velocity.y);
+    //     }
+    //     if (Input.GetKeyDown(KeyCode.W) || (Input.GetKeyDown(KeyCode.UpArrow)))
+    //     {
+    //         if(in_air == false)
+    //         {
+    //             rb2d.AddForce(new Vector2(0, jump_height), ForceMode2D.Impulse);
+    //         }
+    //     }
+    // }
 
 }
 
