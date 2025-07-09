@@ -5,6 +5,7 @@ public class EnemyFollow : MonoBehaviour
     [Header("Follow Settings")]
     public float moveSpeed = 2f;
     public float detectionRange = 5f;
+    public int health = 3;
     public Transform player;
 
     private Rigidbody2D rb;
@@ -13,6 +14,16 @@ public class EnemyFollow : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        // Auto-assign the player if not already set
+        if (player == null)
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null)
+            {
+                player = playerObj.transform;
+            }
+        }
     }
 
     void FixedUpdate()
@@ -39,7 +50,8 @@ public class EnemyFollow : MonoBehaviour
         }
         else
         {
-            rb.velocity = new Vector2(0, rb.velocity.y); // Stop when out of range
+            // Stop moving if out of range
+            rb.velocity = new Vector2(0, rb.velocity.y);
         }
     }
 
@@ -49,5 +61,20 @@ public class EnemyFollow : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
+    }
+
+    public void TakeDamage(int amount)
+    {
+        health -= amount;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Destroy(gameObject);
+        // You could notify a GameManager here
     }
 }
