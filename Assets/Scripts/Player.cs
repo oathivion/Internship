@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     public float speed = 5f;
@@ -13,9 +14,10 @@ public class Player : MonoBehaviour
 
     private Rigidbody2D rb2d;
 
-    public int maxHealth = 5;
+    public float maxHealth = 5;
 
-    public int currentHealth;
+    public float currentHealth;
+    public Image HealthBar;
 
     void Start()
     {
@@ -36,22 +38,16 @@ public class Player : MonoBehaviour
         {
             rb2d.AddForce(new Vector2(0, jump_height), ForceMode2D.Impulse);
         }
+        if (currentHealth <=0)
+        {
+            Die();
+        }
+        //HealthBar.fillAmount = Mathf.Clamp(currentHealth / maxHealth, 0, 1);
 
         
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        Debug.Log("Triggered with: " + other.gameObject.name);
-
-        if (other.gameObject.CompareTag("Enemy"))
-        {
-            Debug.Log("Triggered with an Enemy!");
-            currentHealth -= 1;
-        }
-    }
-
-    
+        
 
     void Die()
     {
@@ -66,6 +62,17 @@ public class Player : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth-=damage;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log($"Player collided with: {collision.gameObject.name}");
+        Debug.Log($"Player Current Health: {currentHealth}");
     }
 
 
