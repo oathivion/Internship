@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Tutoral.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Easy_Level.unity
+    guid: a236db64ac1531c40899219b703c2f49
   m_configObjects: {}
