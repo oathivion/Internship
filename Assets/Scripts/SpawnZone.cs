@@ -6,14 +6,8 @@ public class SpawnZone : MonoBehaviour
 {
     public Vector2 zoneSize = new Vector2(10f, 10f);
     public GameObject[] enemyPrefabs;
-    public int enemyCount = 5;
 
-    void Start()
-    {
-        GenerateEnemies();
-    }
-
-    void GenerateEnemies()
+    public void SpawnEnemies(int enemyCount)
     {
         for (int i = 0; i < enemyCount; i++)
         {

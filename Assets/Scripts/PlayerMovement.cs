@@ -13,6 +13,10 @@ public class PlayerMovement : MonoBehaviour
     public float wallCheckRadius = 0.2f;
     public LayerMask groundLayer;
     public LayerMask wallLayer;
+    public float attackRange = 0.5f;
+    public int attackDamage = 20;
+    public Transform attackPoint;
+    public LayerMask enemyLayers;
 
     [Header("Health")]
     public int maxHealth = 100;
@@ -31,43 +35,51 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void Update()
-{
-    isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-    isOnWall = Physics2D.OverlapCircle(wallCheck.position, wallCheckRadius, wallLayer);
-
-    if (Input.GetButtonDown("Jump"))
     {
-        if (isGrounded)
-        {
-            // Regular jump
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-        }
-        else if (isOnWall && !isGrounded)
-        {
-            // Wall jump
-            float wallJumpDirection = transform.localScale.x > 0 ? -1 : 1;
-            rb.velocity = new Vector2(wallJumpDirection * moveSpeed, jumpForce);
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        isOnWall = Physics2D.OverlapCircle(wallCheck.position, wallCheckRadius, wallLayer);
 
-            // Optional: flip the character after wall jump
+        if (Input.GetButtonDown("Jump"))
+        {
+            if (isGrounded)
+            {
+                // Regular jump
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            }
+            else if (isOnWall && !isGrounded)
+            {
+                // Wall jump
+                float wallJumpDirection = transform.localScale.x > 0 ? -1 : 1;
+                rb.velocity = new Vector2(wallJumpDirection * moveSpeed, jumpForce);
+
+                // Optional: flip the character after wall jump
+            }
         }
+        if (Input.GetKeyDown(KeyCode.E)) // Or whatever key you want
+        {
+             Attack();
+        }
+
     }
-}
+
+    
 
     void FixedUpdate()
-{
-    float moveInput = Input.GetAxis("Horizontal");
-    rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
+    {
+        float moveInput = Input.GetAxis("Horizontal");
+        rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
 
-    // Flip the player if the direction changed
-    if (moveInput > 0 && !facingRight)
-    {
-        Flip();
+        // Flip the player if the direction changed
+        if (moveInput > 0 && !facingRight)
+        {
+            Flip();
+        }
+        else if (moveInput < 0 && facingRight)
+        {
+            Flip();
+        }
     }
-    else if (moveInput < 0 && facingRight)
-    {
-        Flip();
-    }
-}
+    
 
     void Flip()
 {
@@ -83,12 +95,32 @@ public class PlayerMovement : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
     }
 
+    void Attack()
+    {
+        
+
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            enemy.GetComponent<EnemyHealth>()?.TakeDamage(attackDamage);
+        }
+    }
+
+
+
+
     void OnDrawGizmosSelected()
     {
         if (groundCheck != null)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        }
+        else if (attackPoint != null)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(attackPoint.position, attackRange);
         }
     }
 

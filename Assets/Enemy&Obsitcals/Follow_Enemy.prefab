@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 7751817069191850785}
   - component: {fileID: 7751817069191850786}
   - component: {fileID: 7751817069191850789}
-  m_Layer: 0
+  - component: {fileID: 2143678181983179111}
+  m_Layer: 3
   m_Name: Follow_Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,3 +166,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7da9b548a9aeec4ba133f50892de80a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2143678181983179111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7751817069191850787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 222630523b46b2945bf63924d763fb46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
