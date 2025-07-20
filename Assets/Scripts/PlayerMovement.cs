@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -26,12 +28,19 @@ public class PlayerMovement : MonoBehaviour
     private bool isGrounded;
     private bool isOnWall;
     private bool facingRight = true;
+    private HealthBar healthBar;
 
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
+
+        healthBar = FindObjectOfType<HealthBar>();
+        if (healthBar != null)
+        {
+            healthBar.SetMaxHealth(maxHealth);
+        }
     }
 
     void Update()
@@ -134,12 +143,17 @@ public class PlayerMovement : MonoBehaviour
         {
             Die();
         }
+        if (healthBar != null)
+        {
+            healthBar.SetHealth(currentHealth);
+        }
     }
 
     void Die()
     {
-        Debug.Log("Player died.");
-        // Add death behavior here (disable movement, trigger animation, reload scene, etc.)
         gameObject.SetActive(false);
-    }
+        SceneManager.LoadScene("Death");
+
+    
+}
 }

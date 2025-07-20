@@ -59,6 +59,12 @@ public class GameManager : MonoBehaviour
             Invoke(nameof(StartLevel), 2f); // Wait before starting next level
         }
     }
+
+    public void ResetProgress()
+    {
+        currentLevel = 0;
+        enemiesRemaining = 0;
+    }   
     void LoadLevelPath()
     {
         SceneManager.LoadScene("Assets/Scenes/Medium_Level.unity"); // OR use the scene index
